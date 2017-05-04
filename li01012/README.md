@@ -1,11 +1,12 @@
+## Description
+Changed my project from tobacco survey to cancer incident rate per county for state of Texas. 
 
-## Secondary school tobacco use
 
-One-sentence project description goes here
 
 ### Data
 
-Project repository:  ???
+https://github.com/li01012/classes/blob/master/Project/Final_Texas_Data.csv
+here's data file
 
 ## To Do
 
