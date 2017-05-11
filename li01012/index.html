@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Popultion/Cancer Incident Count In state of Texas</title>
+
+<style>
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+path{
+  fill: none;
+  stroke: black;
+}
+ 
+ 
+
+</style>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<body>
+<script>
+var width = 960;
+var height = 500;
+
+var data = null; // global variable
+// Set the map projection centered on Texas
+var projection = d3.geoMercator()
+    .scale(2000)
+    .center([-98.90, 31.96]);
+		
+var path = d3.geoPath()
+    .pointRadius(1)
+    .projection(projection);
+    //projection.fitSize([width, height], object);
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+var layer1 = svg.append("g");
+var layer2 = svg.append("g");
+
+ 
+// This color scale works for values ranging from 2 to 10
+
+var threshold = d3.scaleThreshold()
+    .domain([1, 10, 50, 200, 800, 2000, 5000, 10000])
+    .range(d3.schemeOrRd[9]);
+  
+var url = "https://raw.githubusercontent.com/TNRIS/tx.geojson/master/counties/tx_counties.geojson";
+var TEX = "https://raw.githubusercontent.com/li01012/classes/master/Project/Final_Texas_Data.csv";
+
+  d3.queue()
+    .defer(d3.json, "url")
+    .defer(d3.csv, "TEX")
+    
+  
+// Read and plot the state & county boundaries  
+d3.json(url, plotState);
+d3.csv(TEX, my);
+ 
+
+function plotState(error, tx) {
+  if (error) console.log(error);
+  
+var all = tx.features;
+   
+  layer1.selectAll("path")
+      .data(all)
+  	.enter().append ("path")
+      .attr("d", path);
+
+ }
+  
+ function my(error, csv) {
+  if (error) throw error;
+    console.log(csv[0])
+      
+     layer2.selectAll("path.csv")
+        .data("all")
+        .enter().append("fill")
+        .attr("class", "csv")
+        .style("fill", "#DC143C")
+   
+
+    svg.selectAll('path.csv')
+      .data("all")
+    .enter().append('path')
+      .attr('d', path)
+      .attr('class', 'csv')
+      .attr("fill", function(d) { return threshold(csv[4]); })
+      .attr('stroke', '#000')
+      .attr('stroke-opacity', '0.15')
+ addLegend();
+
+
+};
+  
+  function addLegend() {
+
+  var formatNumber = d3.format("d");
+  var x = d3.scalePow().exponent('.15')
+      .domain([1, 80000])
+      .range([0, 300]);
+
+  var xAxis = d3.axisBottom(x)
+      .tickSize(13)
+      .tickValues(threshold.domain())
+  		.tickFormat(formatNumber)
+
+  var g = svg.append("g")
+      .attr('transform', 'translate(3, 50)')
+      .call(xAxis);
+
+  g.select(".domain")
+      .remove();
+
+  g.selectAll("rect")
+    .data(threshold.range().map(function(color) {
+      var d = threshold.invertExtent(color);
+      if (d[0] == null) d[0] = x.domain()[0];
+      if (d[1] == null) d[1] = x.domain()[1];
+      return d;
+    }))
+    .enter().insert("rect", ".tick")
+      .attr("height", 12)
+      .attr("x", function(d) { return x(d[0]); })
+      .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+      .attr("fill", function(d) { return threshold(d[0]); });
+
+  g.append("text")
+      .attr("fill", "#000")
+      .attr("font-weight", "bold")
+      .attr("text-anchor", "start")
+      .attr("y", -6)
+      .text("No.of Cancer Incidents");
+}
+  
+function mousemoved() {
+  info.text(formatLocation(projection.invert(d3.mouse(this)), projection.scale()));
+}
+function formatLocation(p, k) {
+  var format = d3.format("." + Math.floor(Math.log(k) / 2 - 2) + "f");
+  return (p[1] < 0 ? format(-p[1]) + "°S" : format(p[1]) + "°N") + " "
+       + (p[0] < 0 ? format(-p[0]) + "°W" : format(p[0]) + "°E");
+}
+  
+</script>
