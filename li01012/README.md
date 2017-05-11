@@ -1,11 +1,11 @@
 
-## Secondary school tobacco use
+## Census data of Texas with Cancer Incident counts per county
 
-One-sentence project description goes here
+Census data of Texas with Cancer Incident counts per county
 
 ### Data
 
-Project repository:  ???
+https://github.com/li01012/classes/blob/master/Project/Final_Texas_Data.csv
 
 ## To Do
 
