@@ -10,7 +10,7 @@ Project Repository--> https://github.com/li01012/classes/tree/master/Project
 Demo is here --> https://gist.github.com/li01012/efd00cb6429a943c8b62e58934d6a7ba
 & here --> https://bl.ocks.org/li01012/efd00cb6429a943c8b62e58934d6a7ba
 
-#### Documentation
+#### Project Description
 
 This project focuses on the State of Taxes and uses data of cancer incident rate from "state cancer profile" and also uses population data to highlight the counties within Taxes where there is more cancer incident using a legend that shows the cancer density using color scheme which ranges from light to darker color depicting the light color as the lowest rate and darker color as the highest cancer incident count per county in State of Taxes. Further this project wants to analyze the population rate per county, thus, I am using mouse pointer to hover on each county to display cancer rate & population count per county.
 
